@@ -1,0 +1,21 @@
+{
+    "dev": {
+        "app_function": "app.main.app",
+        "aws_region": "us-west-2",
+        "exclude": [
+            "boto3",
+            "dateutil",
+            "botocore",
+            "s3transfer",
+            "concurrent"
+        ],
+        "profile_name": "personal",
+        "project_name": "fastrax-interac",
+        "runtime": "python3.9",
+        "s3_bucket": "zappa-z7z9dzwsc",
+        "memory_size": 512,
+        "timeout_seconds": 30,
+        "manage_roles": false,
+        "role_name": "fastrax-interac-dev-ZappaLambdaExecutionRole"
+    }
+}
