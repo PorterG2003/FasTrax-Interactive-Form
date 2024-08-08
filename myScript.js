@@ -381,7 +381,7 @@ function submitForm() {
   const delay = new Promise(resolve => setTimeout(resolve, 1000));
 
   // Send the form data to the webhook
-  const fetchPromise = fetch('https://n6ubkbodoc.execute-api.us-west-2.amazonaws.com/Prod/triggerr', {
+  const fetchPromise = fetch('https://n6ubkbodoc.execute-api.us-west-2.amazonaws.com/Prod/trigger', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
