@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive Permit Builder">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://static.wixstatic.com/media/dfe2dd_e4076cd511254b98881d4f23b3b13658%7Emv2_d_1200_1217_s_2.jpg/v1/fill/w_32%2Ch_32%2Clg_1%2Cusm_0.66_1.00_0.01/dfe2dd_e4076cd511254b98881d4f23b3b13658%7Emv2_d_1200_1217_s_2.jpg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'></script>
+    <script src="myScript.js"></script>
+    <title>FasTrax - Interactive Permit Builder</title>
+  </head>
+  <body id="page">
+    <div id="editor"></div>
+    <div id="wrapper">
+      <div class="header">
+        <div id="logo">
+          <img src="logo.png" alt="">
+          <p id="logotext">Permit Service, LLC</p>
+          <p>(701) 509-6523</p>
+          <a href="mailto:permits@fastraxpermitservice.com">permits@fastraxpermitservice.com</a>
+        </div>
+        <div id='headerRight'>
+          <h1>Interactive Permit Builder</h1>
+          <h3>We will keep all of the equipment information on file to make ordering faster in the future</h3>
+        </div>
+      </div>
+
+      <div id='divider1' class='divider'></div>
+
+      <div id='section1' class="section-header">Section 1</div>
+      <div id='section1Form' class="section">
+        <div class="row">
+          <div class='input-group xlarge'>
+            <label class="labels" id="CarrierLabel" for="Carrier">Carrier</label> 
+            <input id="CarrierInput" type="text" name="Carrier">
+          </div>
+        </div>
+        <div class="row">
+          <div class='input-group large'>
+            <label class="labels" id="ContactLabel" for="Contact">Contact</label> 
+            <input id="ContactInput" type="text" name="Contact">
+          </div>
+          <div class='input-group medium'>
+            <label class="labels" id="PhoneLabel" for="Phone">Phone</label> 
+            <input id="PhoneInput" type="tel" name="Phone">
+          </div>
+          <div class='input-group large'>
+            <label class="labels" id="EmailLabel" for="Email">Email Address</label> 
+            <input id="EmailInput" type="text" name="Email">
+          </div>
+        </div>
+      </div>
+
+      <div id='divider2' class='divider'></div>
+
+      <div id='section2' class="section-header">Section 2</div>
+      <div id='section2Form' class="section">
+        <div class="row">
+          <div class='input-group medium'>
+            <label class="labels" id="DOTNumberLabel" for="DOTNumber">DOT Number</label> 
+            <input id="DOTNumberInput" type="text" name="DOTNumber"></div>
+          <div class='input-group checkbox'>
+            <label class="labels" id="IFTALabel" for="IFTA">IFTA</label> 
+            <p id="subIFTA" class="subLabel">Fuel</p>
+            <input id="IFTAInput" type="checkbox" name="IFTA">
+          </div>
+          <div class='input-group checkbox'>
+            <label class="labels" id="IRPLabel" for="IRP">IRP/Cab Card</label> 
+            <p id="subIRP" class="subLabel">Apportioned registration</p>
+            <input id="IRPInput" type="checkbox" name="IRP/Cab Card">
+          </div>
+          <div class='input-group checkbox'>
+            <label class="labels" id="TripPermitLabel" for="TripPermit">Purchase Trip Permit</label> 
+            <p id="subTrip" class="subLabel">Temp registration permits</p>
+            <input id="TripPermitInput" type="checkbox" name="Purchase Trip Permit">
+          </div>
+          <div class='input-group checkbox'>
+            <label class="labels" id="FuelPermitLabel" for="FuelPermit">Purchase Fuel Permit</label> 
+            <p id="subFuel" class="subLabel">If you do not have IFTA</p>
+            <input id="FuelPermitInput" type="checkbox" name="Purchase Fuel Permit">
+          </div>
+        </div>
+      </div>
+
+      <div id='divider3' class='divider'></div>
+
+      <div id='section3' class="section-header">Section 3</div>
+      <div id='section3Form' class="section">
+        <div class="row">
+          <div class='input-group'>
+            <label class="labels" id="DateLabel" for="Date">Date of Travel</label> 
+            <input id="DateInput" type="date" name="Date of Travel">
+          </div>
+          <div class='input-group xxxlarge'>
+            <label class="labels" id="LoadLabel" for="Load">Load Description</label> 
+            <input class="" id="LoadInput" type="text" name="Load Description">
+          </div>
+        </div>
+        <div class="row">
+          <div class='input-group half-width'>
+            <label class="labels" id="StartLabel" for="Start">Start Location</label> 
+            <input class="" id="StartInput" type="text" name="Start Location">
+          </div>
+          <div class='input-group half-width'>
+            <label class="labels" id="EndLabel" for="End">End Location</label> 
+            <input class="" id="EndInput" type="text" name="End Location">
+          </div>
+        </div>
+        <div class="row">
+          <div class='input-group textarea'>
+            <label class="labels" id="NotesLabel" for="Notes">Notes</label> 
+            <textarea id="NotesInput" name="Notes"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div id='divider4' class='divider'></div>
+
+      <div id='section4' class="section-header">Section 4</div>
+      <div id='section4Form' class="section">
+        <div class="row">
+          <div class="col">
+            <div class='input-group small'>
+              <label class="labels" id="TotalLengthLabel" for="TotalLength">Total Length</label> 
+              <input id="TotalLengthInput" type="text" name="Total Length">
+            </div>
+            <div class='input-group small'>
+              <label class="labels" id="TotalWidthLabel" for="TotalWidth">Total Width</label> 
+              <input id="TotalWidthInput" type="text" name="Total Width">
+            </div>
+            <div class='input-group small'>
+              <label class="labels" id="TotalHeightLabel" for="TotalHeight">Total Height</label> 
+              <input id="TotalHeightInput" type="text" name="Total Height">
+            </div>
+          </div>
+          <div class="col">
+            <div class='input-group small'>
+              <label class="labels" id="TrailerLengthLabel" for="TrailerLength">Trailer Length</label> 
+              <p id="subTrailerLength" class="subLabel">Single Unit Length</p>
+              <input id="TrailerLengthInput" type="text" name="Trailer Length">
+            </div>
+            <div class='input-group small'>
+              <label class="labels" id="TrailerWidthLabel" for="TrailerWidth">Trailer Width</label> 
+              <input id="TrailerWidthInput" type="text" name="Trailer Width">
+            </div>
+            <div class='input-group checkbox' id="stretchTrailerGroup">
+              <label id="StretchTrailerLabel" for="StretchTrailerYes">Stretch Trailer</label> 
+              <p id="subStretchTrailer" class="subLabel bottomCaption">Always tell us your middle bridge spacing</p>
+              <input id="StretchTrailerInput" type="checkbox" name="Stretch Trailer">
+            </div>
+          </div>
+          <div class="col">
+            <div class='input-group small'>
+              <label class="labels" id="LoadLengthLabel" for="LoadLength">Load Length</label> 
+              <input id="LoadLengthInput" type="text" name="Load Length">
+            </div>
+            <div class='input-group small'>
+              <label class="labels" id="LoadWidthLabel" for="LoadWidth">Load Width</label> 
+              <input id="LoadWidthInput" type="text" name="Load Width">
+            </div>
+            <div class='input-group small'>
+              <label class="labels" id="LoadHeightLabel" for="LoadHeight">Load Height</label> 
+              <input id="LoadHeightInput" type="text" name="Load Height">
+            </div>
+          </div>
+          <div class="col">
+            <div class='input-group small'>
+              <label class="labels" id="FrontOverhangLabel" for="FrontOverhang">Front Overhang</label> 
+              <input id="FrontOverhangInput" type="text" name="Front Overhang">
+            </div>
+            <div class='input-group small'>
+              <label class="labels" id="RearOverhangLabel" for="RearOverhang">Rear Overhang</label> 
+              <input id="RearOverhangInput" type="text" name="Rear Overhang">
+            </div>
+            <div class='input-group checkbox'>
+              <label id="SelfPropelledLabel" for="SelfPropelledYes">Self Propelled</label> 
+              <input id="SelfPropelledInput" type="checkbox" name="Self Propelled">
+            </div>
+          </div>
+          <div class="col">
+            <div class='input-group checkbox'>
+              <label id="NonDivisibleLabel" for="NonDivisibleYes">Non-Divisible</label> 
+              <input id="NonDivisibleInput" type="checkbox" name="Non-Divisible">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+        </div>
+        <div class="row">
+        </div>
+      </div>
+
+      <div id='divider5' class='divider'></div>
+
+      <div id='section5' class="section-header">Section 5</div>
+      <div id='section5Form' class="section">
+        <div class="row">
+          <div class='input-group'>
+            <label class="labels" id="NumberOfUnitsLabel" for="NumberOfUnits">Number of Units in Configuration</label>
+            <p id="subNumberOfUnits" class="subLabel">Ex. Tractor/Trailer = 2,  Tractor/Jeep/Trailer/Booster = 4, Workover rig = 2</p>
+            <input id="NumberOfUnitsInput" type="number" name="Number of Units" value="1" min="1" max="5" onchange="populate5()">
+          </div>
+        </div>
+
+        <div class="row" id="section5GroupRow">
+        </div>
+      </div>
+
+      <div id='divider6' class='divider'></div>
+
+      <div id='section6' class="section-header">Section 6</div>
+      <div id='section6Form' class="section">
+        <p id="BuildConfig">Build Your Configuration</p>
+        <div class='input-group small'>
+          <label class="labels" id="NumOfGroupsLabel" for="NumOfGroups">Number of Axle Groups</label>
+          <input id="NumOfGroupsInput" type="number" name="Number of Axle Groups" value="2" min="2" max="6" onchange="populate6()">
+        </div>
+
+        <div class="row" id="AxleGroupRow">
+        </div>
+      </div>
+
+      <div id='divider7' class='divider'></div>
+
+      <form method="post" id="section7" class="section">
+        <img id="semi" src="semi.png" alt="">
+        <div id="message"></div>
+        <button type="button" id="submit" onclick="submitForm()"><p id='savep'>Submit</p></button>
+      </form>
+
+    </div>
+  </body>
+</html>
