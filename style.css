@@ -365,7 +365,7 @@ textarea {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  color: rgb(86, 86, 86);
+  color: rgb(158, 158, 158);
   text-align: center;
   font-size: 20px;
   font-weight: bold;
@@ -386,10 +386,12 @@ textarea {
 
 #message.green {
   background-color: #5eff81;
+  color: #318042;
 }
 
 #message.red {
   background-color: #ff5e5e;
+  color: #843333;
 }
 
 @keyframes slideRight {
@@ -439,5 +441,17 @@ textarea {
   }
   50% {
     transform: translateY(-50%) translateX(-10px); /* Move left by 10px */
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .section {
+    padding: 30px 5px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  #wrapper {
+    padding: 0px 5px;
   }
 }

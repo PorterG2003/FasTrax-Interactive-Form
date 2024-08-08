@@ -270,9 +270,6 @@ function submitForm() {
   var semi = $('#semi');
   var message = $('#message');
 
-  semi.addClass('slide-right');
-  submitButton.addClass('slide-right');
-
   // Collect the form data dynamically
   var formData = {
     "Site": "fastraxpermitservice.com",
@@ -377,8 +374,14 @@ function submitForm() {
 
   console.log("Form Data:\n", formData);
 
+  semi.addClass('slide-right');
+  submitButton.addClass('slide-right');
+
+  // Create a delay promise
+  const delay = new Promise(resolve => setTimeout(resolve, 1000));
+
   // Send the form data to the webhook
-  fetch('https://n6ubkbodoc.execute-api.us-west-2.amazonaws.com/Prod/trigger', {
+  const fetchPromise = fetch('https://n6ubkbodoc.execute-api.us-west-2.amazonaws.com/Prod/triggerr', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -387,7 +390,17 @@ function submitForm() {
     body: JSON.stringify(formData)
   })
   .then(response => {
-    handleResponse(semi, submitButton, message, response.ok);
+    return response.ok;
+  })
+  .catch(error => {
+    console.error('Error submitting form:', error);
+    return false; // Treat errors the same way as a bad response
+  });
+
+  // Wait for both the delay and fetch promises
+  Promise.all([delay, fetchPromise])
+  .then(([_, responseOk]) => {
+    handleResponse(semi, submitButton, message, responseOk);
   })
   .catch(error => {
     console.error('Error submitting form:', error);
