@@ -13,6 +13,8 @@ body {
 #wrapper {
   background-color: #fff;
   box-shadow: #aaa 0px 50px 50px;
+  position: relative;
+  overflow: hidden;
 }
 
 input, textarea {
@@ -300,6 +302,74 @@ textarea {
   width: 54px;
 }
 
+#download {
+  background-color: #0070c0;
+  color: white;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.bottomCaption {
+  margin-top: 4px;
+  font-style: italic;
+  color: #a40000;
+}
+
+#section7 {
+  height: 125px;
+  padding-top: 0px;
+}
+
+#screenshotImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 9999;
+  transform-origin: top left; /* Ensure the transform-origin is set correctly */
+}
+
+.slide-right  {
+  animation: slideRight 1s forwards;
+  -webkit-animation: slideRight 1s forwards;
+}
+
+#submit.far-left {
+  left: -50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+}
+
+#message.far-left {
+  left: -50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+}
+
+#semi {
+  position: absolute;
+  width: 132px;
+  left: -50%;
+  transform: translateX(-50%);
+}
+
+#semi.middle {
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+}
+
 #submit {
   position: absolute;
   left: 50%;
@@ -315,61 +385,6 @@ textarea {
   margin-top: 30px;
 }
 
-#download {
-  background-color: #0070c0;
-  color: white;
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.bottomCaption {
-  margin-top: 4px;
-  font-style: italic;
-  color: #a40000;
-}
-
-#semi {
-  position: absolute;
-  width: 132px;
-  left: -50%;
-  transform: translateX(-50%);
-}
-
-#semi.middle {
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-#submit.far-left {
-  left: -50%;
-  transform: translateX(-50%);
-  -webkit-transform: translateX(-50%);
-  -moz-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  -o-transform: translateX(-50%);
-}
-
-#section7 {
-  height: 125px;
-  padding-top: 0px;
-}
-
-.slide-right  {
-  animation: slideRight 1s forwards;
-  -webkit-animation: slideRight 1s forwards;
-}
-
-#screenshotImage {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: auto;
-  z-index: 9999;
-  transform-origin: top left; /* Ensure the transform-origin is set correctly */
-}
-
 #message {
   display: none;
   position: absolute;
@@ -383,11 +398,6 @@ textarea {
   padding: 15px 30px;
   border-radius: 10px;
   margin-top: 30px;
-}
-
-#message.far-left {
-  left: -50%;
-  transform: translateX(-50%);
   -webkit-transform: translateX(-50%);
   -moz-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -402,30 +412,6 @@ textarea {
 #message.red {
   background-color: #ff5e5e;
   color: #843333;
-}
-
-@keyframes slideRight {
-  0% {
-  }
-  100% {
-    transform: translateX(calc(100vw - 50%));
-    -webkit-transform: translateX(calc(100vw - 50%));
-    -moz-transform: translateX(calc(100vw - 50%));
-    -ms-transform: translateX(calc(100vw - 50%));
-    -o-transform: translateX(calc(100vw - 50%));
-  }
-}
-
-@keyframes slideRightContinue {
-  0% {
-  }
-  100% {
-    transform: translateX(calc(100vw - 50%));
-    -webkit-transform: translateX(calc(100vw - 50%));
-    -moz-transform: translateX(calc(100vw - 50%));
-    -ms-transform: translateX(calc(100vw - 50%));
-    -o-transform: translateX(calc(100vw - 50%));
-  }
 }
 
 .scroll-indicator {
