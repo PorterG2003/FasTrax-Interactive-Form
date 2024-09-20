@@ -1,6 +1,6 @@
 {
     "dev": {
-        "app_function": "app.main.app",
+        "app_function": "app.app",
         "aws_region": "us-west-2",
         "exclude": [
             "boto3",
@@ -12,10 +12,47 @@
         "profile_name": "personal",
         "project_name": "fastrax-interac",
         "runtime": "python3.9",
-        "s3_bucket": "zappa-z7z9dzwsc",
-        "memory_size": 512,
-        "timeout_seconds": 30,
-        "manage_roles": false,
-        "role_name": "fastrax-interac-dev-ZappaLambdaExecutionRole"
+        "s3_bucket": "zappa-vy4tv2kgd",
+        "environment_variables": {
+            "ROUTE": "/dev"
+        }
+    },
+    "stage": {
+        "app_function": "app.app",
+        "aws_region": "us-west-2",
+        "exclude": [
+            "boto3",
+            "dateutil",
+            "botocore",
+            "s3transfer",
+            "concurrent"
+        ],
+        "profile_name": "personal",
+        "project_name": "fastrax-interac",
+        "runtime": "python3.9",
+        "s3_bucket": "zappa-vy4tv2kgd",
+        "environment_variables": {
+            "ROUTE": "/stage"
+        }
+    },
+    "prod": {
+        "app_function": "app.app",
+        "aws_region": "us-west-2",
+        "project_name": "fastrax-interac",
+        "exclude": [
+            "boto3",
+            "dateutil",
+            "botocore",
+            "s3transfer",
+            "concurrent"
+        ],
+        "profile_name": "personal",
+        "domain": "form.fastraxpermitservice.com",
+        "runtime": "python3.9",
+        "s3_bucket": "zappa-vy4tv2kgd",
+        "certificate_arn": "arn:aws:acm:us-west-2:923006377510:certificate/7048a5fa-f427-4dd5-b562-63f4e80141ce",
+        "environment_variables": {
+            "ROUTE": ""
+        }
     }
 }

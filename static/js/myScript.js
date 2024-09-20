@@ -1,4 +1,4 @@
-
+//------POPULATE------
 function populate5(fromCookie=false) {
   console.log("Populating 5");
   var data;
@@ -115,7 +115,7 @@ function populate6(fromCookie=false) {
       <div class='input-group xxsmall'>
         <label class="labels" id="AxlesInGroupLabel${i}" for="AxlesInGroup">Axles</label>
         <p id="subGroupWeights1" class="subLabel">Group ${i+1}</p>
-        <input id="AxlesInGroupInput${i}${i}" type="number" name="Axles In Group${i}${i}" value="1" min="1" max="5" onchange="populateAxleGroup(${i})">
+        <input id="AxlesInGroupInput${i}${i}" type="number" name="Axles In Group${i}${i}" value="1" min="1" max="5" onchange="populateAxleGroup(${i})" class="axles-in-group">
       </div>
       <div class="row" id="imageRow${i}">
       </div>
@@ -173,6 +173,8 @@ function populateAxleGroup(group) {
     $(`#AxlesInGroupInput${group}${group}`).val(5);
   }
 
+  var numGroups = $('#NumOfGroupsInput').val(); // Use .val() to get the value of the input field
+
   // Calculate the maximum width and set it
   var maxWidth = 54 * numAxles + 20 * (numAxles - 1) + "px";
   $("#AxleGroup"+group).css("width", maxWidth);
@@ -187,18 +189,18 @@ function populateAxleGroup(group) {
   axleSpacingRow.html("");
 
   for(var i = 0; i < numAxles; i++) {
-    imageRow.append(`<img class="tireImages" id="tire${group}${i}" src="static/images/tire.png" alt="">`)
+    imageRow.append(`<img class="tireImages" id="tire${group}${i}" src="${route}/static/images/tire.png" alt="">`)
 
     inputCol = `
     <div class="col">
-      <input id="TireSizeInput${group}${i}" type="text" name="Tire Size${group}${i}">
-      <input id="NumOfTiresInput${group}${i}" type="text" name="Number of Tires per Axle${group}${i}">
-      <input id="TrackWidthInput${group}${i}" type="text" name="Track Width${group}${i}">
+      <input id="TireSizeInput${group}${i}" type="text" name="Tire Size${group}${i}" class="tire-size">
+      <input id="NumOfTiresInput${group}${i}" type="text" name="Number of Tires per Axle${group}${i}" class="num-tires">
+      <input id="TrackWidthInput${group}${i}" type="text" name="Track Width${group}${i}" class="track-width">
     </div>`
     inputRow.append(inputCol);
 
     if (i != numAxles-1 || group!=$('#NumOfGroupsInput').val()-1) {
-      axleSpacingRow.append(`<input id="AxleSpacingInput${group}${i}" type="text" name="Axle Spacing${group}${i}">`);
+      axleSpacingRow.append(`<input id="AxleSpacingInput${group}${i}" type="text" name="Axle Spacing${group}${i}" class="axle-spacing">`);
     }
 
     var axleGroup = $(`#AxleGroup${group}`);
@@ -231,6 +233,12 @@ function populateAxleGroup(group) {
         }
       })
     });
+    $(document).find('.axlesWeights').each(function () {
+      var $thisInput = $(this);
+      if (data[$thisInput.attr('name')]) {
+        $thisInput.val(data[$thisInput.attr('name')]);
+      }
+    });
   }
   console.log(`Populated Axle Group ${group}`);
 
@@ -254,14 +262,96 @@ $(document).ready(function () {
   populate6(fromCookie=true);
   loadDataFromCookie("fastrax-form");
 
+  if (submitted_data != "") {
+    close_all_inputs();
+  }
+
   $('input').on('change', handleInputChange);
+
+  setTabIndices();
+  updateKeyframes();
+  window.addEventListener('resize', updateKeyframes);
 });
+
+function close_all_inputs() {
+  $('input').prop('disabled', true);
+  $('textarea').prop('disabled', true);
+  $('select').prop('disabled', true);
+
+  $('#section7').css('display', 'none');
+  $('#divider7').css('display', 'none');
+}
 
 function handleInputChange() {
   console.log("Handling Input Change");
   saveDataToCookie("fastrax-form");
   loadDataFromCookie("fastrax-form");
   console.log("Handled Input Change");
+
+  setTabIndices();
+}
+
+function setTabIndices() {
+  var index = 1;
+  $('#wrapper').find('.section').each(function() {
+    var section = $(this);
+    var sectionId = section.attr('id');
+    console.log(sectionId);
+
+    if (sectionId != 'section6Form') {
+      section.find('input, textarea').each(function() {
+        var input = $(this);
+        var name = input.attr('name');
+  
+        console.log(`tabindex for ${name} is ${index}`);
+        input.attr('tabindex', index);
+
+        index += 1;
+      });
+    } else if (sectionId == 'section6Form') {
+      $('#NumOfGroupsInput').attr('tabindex', index);
+      index += 1;
+
+      var rows = ['.axles-in-group', '.axlesWeights', '.tire-size', '.num-tires', '.track-width', 'input.axle-spacing'];
+      for (var i = 0; i<rows.length; i++) {
+        row = rows[i];
+        section.find(row).each(function() {
+          var input = $(this);
+          var name = input.attr('name');
+    
+          console.log(`tabindex for ${name} is ${index}`);
+          input.attr('tabindex', index);
+  
+          index += 1;
+        });
+      }
+    }
+  });
+}
+
+function updateKeyframes() {
+  const wrapper = document.getElementById('wrapper');
+  const wrapperWidth = wrapper.offsetWidth;
+
+  const slideRightKeyframes = `
+    @keyframes slideRight {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(${wrapperWidth}px - 50%)); }
+    }
+  `;
+
+  const slideRightContinueKeyframes = `
+    @keyframes slideRightContinue {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(${wrapperWidth}px - 50%)); }
+    }
+  `;
+
+  const styleSheet = document.getElementById('dynamic-keyframes') || document.createElement("style");
+  styleSheet.type = "text/css";
+  styleSheet.id = 'dynamic-keyframes';
+  styleSheet.innerText = slideRightKeyframes + slideRightContinueKeyframes;
+  document.head.appendChild(styleSheet);
 }
 
 //------SUBMIT------
@@ -373,6 +463,9 @@ function submitForm() {
 
   console.log("Form Data:\n", formData);
 
+  var jsonString = getCookie('fastrax-form');
+  formData.cookieData = jsonString;
+
   semi.addClass('slide-right');
   submitButton.addClass('slide-right');
 
@@ -380,7 +473,7 @@ function submitForm() {
   const delay = new Promise(resolve => setTimeout(resolve, 1000));
 
   // Send the form data to the webhook
-  const fetchPromise = fetch('/submit', {
+  const fetchPromise = fetch(`${route}/submit`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -509,7 +602,12 @@ function getCookie(name) {
 function loadDataFromCookie(name, type) {
   console.log("Loading Data from Cookie");
   // Get the JSON string from the cookie
-  var jsonString = getCookie(name);
+  console.log(submitted_data);
+  if (submitted_data) {
+    var jsonString = submitted_data.replace(/&#34;/g, '"');
+  } else {
+    var jsonString = getCookie(name);
+  }
 
   if (jsonString) {
     // Parse the JSON string to an object
