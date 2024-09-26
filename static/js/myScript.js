@@ -303,7 +303,7 @@ function setTabIndices() {
         var input = $(this);
         var name = input.attr('name');
   
-        console.log(`tabindex for ${name} is ${index}`);
+        //console.log(`tabindex for ${name} is ${index}`);
         input.attr('tabindex', index);
 
         index += 1;
@@ -589,6 +589,13 @@ function saveDataToCookie(name, days) {
 }
 
 function getCookie(name) {
+  if (submitted_data) {
+    console.log("Using submitted data");
+    var jsonString = submitted_data.replace(/&#34;/g, '"');
+    return jsonString
+  }
+
+  console.log("Using cookie data");
   var nameEQ = name + "=";
   var ca = document.cookie.split(';');
   for(var i=0;i < ca.length;i++) {
@@ -602,12 +609,7 @@ function getCookie(name) {
 function loadDataFromCookie(name, type) {
   console.log("Loading Data from Cookie");
   // Get the JSON string from the cookie
-  console.log(submitted_data);
-  if (submitted_data) {
-    var jsonString = submitted_data.replace(/&#34;/g, '"');
-  } else {
-    var jsonString = getCookie(name);
-  }
+  var jsonString = getCookie(name);
 
   if (jsonString) {
     // Parse the JSON string to an object
