@@ -65,6 +65,9 @@ class FasTrax:
             base_url = f"https://8qjlq1wt87.execute-api.us-west-2.amazonaws.com{self.route}"
         elif self.route == "":
             base_url = f"https://form.fastraxpermitservice.com"
+        else:
+            base_url = f"unknown"
+            raise Exception(f"Unknown ROUTE: `{self.route}`")
 
         
         # Complete HTML email body
@@ -88,10 +91,11 @@ class FasTrax:
 
 
         # Send notification emails
+        logger.info(f"ROUTE: `{self.route}`")
         if self.route=="/stage":
             recipients = ["porter@pagtechnologies.com", "ap@fastraxpermitservice.com"]
-        elif self.route=="/":
-            recipients = ["porter@pagtechnologies.com", "ap@fastraxpermitservice.com"]
+        elif self.route=="":
+            recipients = ["porter@pagtechnologies.com", "permits@fastraxpermitservice.com"]
         else:
             recipients = ["porter@pagtechnologies.com"]
             subject += "THIS WAS ONLY SENT TO THIS EMAIL"
