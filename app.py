@@ -4,6 +4,7 @@ import boto3
 import json
 import logging
 import os
+import base64
 
 app = Flask(__name__)
 
@@ -46,11 +47,14 @@ def load_submitted_form(uuid):
     try:
         # Fetch the data from S3
         s3_object = s3.get_object(Bucket=BUCKET_NAME, Key=s3_key)
-        cookie_data = json.loads(s3_object['Body'].read().decode('utf-8'))
-        cookie_data = "{}" if not cookie_data else cookie_data
+        cookie_data = s3_object['Body'].read()  # Keep as bytes
+        cookie_data = b"{}" if not cookie_data else cookie_data
+        
+        # Convert bytes to string using base64 to preserve all characters
+        encoded_data = base64.b64encode(cookie_data).decode('ascii')
 
-        # Render the index.html template with the cookie data
-        return render_template('index.html', route=ROUTE, submitted_data=cookie_data)
+        # Pass the base64 encoded string to the template
+        return render_template('index.html', route=ROUTE, submitted_data=encoded_data)
 
     except Exception as e:
         # If there was an issue fetching the data, return an error message
