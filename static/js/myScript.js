@@ -4,7 +4,12 @@ function populate5(fromCookie=false) {
   var data;
   var jsonString = getCookie("fastrax-form");
   if (jsonString) {
-    var data = JSON.parse(jsonString);
+    try {
+      data = JSON.parse(jsonString);
+    } catch (e) {
+      console.error("Error parsing JSON in populate5:", e);
+      data = null;
+    }
   }
   if (fromCookie && data && data['Number of Units']) {
     $('#NumberOfUnitsInput').val(data['Number of Units']);
@@ -70,7 +75,12 @@ function populate6(fromCookie=false) {
   var data;
   var jsonString = getCookie("fastrax-form");
   if (jsonString) {
-    var data = JSON.parse(jsonString);
+    try {
+      data = JSON.parse(jsonString);
+    } catch (e) {
+      console.error("Error parsing JSON in populate6:", e);
+      data = null;
+    }
   }
   if (fromCookie && data && data['Number of Axle Groups']) {
     $('#NumOfGroupsInput').val(data['Number of Axle Groups']);
@@ -214,31 +224,35 @@ function populateAxleGroup(group) {
 
   var jsonString = getCookie("fastrax-form");
   if (jsonString) {
-    var data = JSON.parse(jsonString);
-    $(document).find('.col').each(function () {
-      var $thisCol = $(this);
-      $thisCol.find('input').each(function () {
+    try {
+      var data = JSON.parse(jsonString);
+      $(document).find('.col').each(function () {
+        var $thisCol = $(this);
+        $thisCol.find('input').each(function () {
+          var $thisInput = $(this);
+          if (data[$thisInput.attr('name')]) {
+            $thisInput.val(data[$thisInput.attr('name')]);
+          }
+        })
+      });
+      $(document).find('.axle-spacing').each(function () {
+        var $thisRow = $(this);
+        $thisRow.find('input').each(function () {
+          var $thisInput = $(this);
+          if (data[$thisInput.attr('name')]) {
+            $thisInput.val(data[$thisInput.attr('name')]);
+          }
+        })
+      });
+      $(document).find('.axlesWeights').each(function () {
         var $thisInput = $(this);
         if (data[$thisInput.attr('name')]) {
           $thisInput.val(data[$thisInput.attr('name')]);
         }
-      })
-    });
-    $(document).find('.axle-spacing').each(function () {
-      var $thisRow = $(this);
-      $thisRow.find('input').each(function () {
-        var $thisInput = $(this);
-        if (data[$thisInput.attr('name')]) {
-          $thisInput.val(data[$thisInput.attr('name')]);
-        }
-      })
-    });
-    $(document).find('.axlesWeights').each(function () {
-      var $thisInput = $(this);
-      if (data[$thisInput.attr('name')]) {
-        $thisInput.val(data[$thisInput.attr('name')]);
-      }
-    });
+      });
+    } catch (e) {
+      console.error("Error parsing JSON in populateAxleGroup:", e);
+    }
   }
   console.log(`Populated Axle Group ${group}`);
 
@@ -590,9 +604,11 @@ function saveDataToCookie(name, days) {
 
 function getCookie(name) {
   if (submitted_data) {
-    console.log("Using submitted data");
-    var jsonString = submitted_data.replace(/&#34;/g, '"');
-    return jsonString
+    console.log("Using submitted data: ", submitted_data);
+    // Decode the base64 string
+    var jsonString = atob(submitted_data);
+    console.log("Decoded JSON string: ", jsonString);
+    return JSON.parse(jsonString);
   }
 
   console.log("Using cookie data");
@@ -608,29 +624,28 @@ function getCookie(name) {
 
 function loadDataFromCookie(name, type) {
   console.log("Loading Data from Cookie");
-  // Get the JSON string from the cookie
   var jsonString = getCookie(name);
 
   if (jsonString) {
-    // Parse the JSON string to an object
-    var data = JSON.parse(jsonString);
-
-    // Iterate through each key-value pair in the form
-    for (var key in data) {
-      if (data.hasOwnProperty(key)) {
-        // Find the input element with the name attribute matching the key
-        var $input = $('[name="' + key + '"]');
-
-        // Populate the input element with the value
-        if ($input.is(':checkbox')) {
-          $input.prop('checked', data[key]);
-        } else {
-          $input.val(data[key]);
+    try {
+      var data = JSON.parse(jsonString);
+      for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+          var $input = $('[name="' + key + '"]');
+          if ($input.is(':checkbox')) {
+            $input.prop('checked', data[key]);
+          } else {
+            $input.val(data[key]);
+          }
         }
       }
+    } catch (e) {
+      console.error("Error parsing JSON in loadDataFromCookie:", e);
+      // If JSON parsing fails, repopulate the form with defaults
+      populate5();
+      populate6();
     }
-  }
-  else {
+  } else {
     populate5();
     populate6();
   }
